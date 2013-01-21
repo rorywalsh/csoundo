@@ -340,7 +340,6 @@ class AndroidBuild extends JavaBuild
             else if(Base.isLinux()){
                 String androidRef = "android.library.reference.1=../.."+System.getenv("HOME")+"/sketchbook/libraries/CsoundAndroid";
                 writer.println(androidRef);
-               // writer.println("android.library.reference.1=../../home/rory/sketchbook/libraries/CsoundAndroid");  
             }
         }
         writer.flush();

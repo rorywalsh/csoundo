@@ -18,25 +18,24 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA  02111-1307  USA
  * 
- * @author	Jacob Joaquin, Rory Walsh, Conor Robotham
+ * @author	Rory Walsh
  * @modified	10/01/2012
  * @version	0.2.1
  */
 
 package csoundo;
-//
-/**
- * Simple class to hold channel name and value.
- */
 
-public class TableMessage {
-	public int xVal;
-	public double yVal;
-        public int tableNumber;
-	
-	public TableMessage(int tableNum, int xPos, double yPos){
-                xVal = xPos;
-                yVal = yPos;
-                tableNumber = tableNum;
-	}
+import processing.core.*;
+
+import csnd.*;
+import java.io.*;
+import java.util.*; 
+
+
+public class CsoundoArray extends CsoundMYFLTArray{
+  
+    public CsoundoArray(){
+        super();
+    }
+    
 }
