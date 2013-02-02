@@ -98,7 +98,10 @@ public class Csoundo{
     }
     
     private void setup(PApplet theParent, Csound csound, String csd) {
-        welcome();
+	//register our outvalue callback
+	createOutValueCallback(myParent);   
+    
+    	welcome();  
         csnd.csoundInitialize(null, null,
         csnd.CSOUNDINIT_NO_SIGNAL_HANDLER);
         myParent = theParent;
@@ -109,7 +112,36 @@ public class Csoundo{
         csoundFile.setCSD(fileToString(csd));
         csoundFile.exportForPerformance();
     }
-    
+
+    //create outvalue callback function
+    public void createOutValueCallback(PApplet parent){
+        try {
+          outvalueCallbackMethod = parent.getClass().getMethod("outvalueCallback", new Class[] {String.class, double.class});
+        } 
+        catch (Exception e) {
+            System.out.println("outvalueCallback() does not exist...");
+          // no such method, or an error.. which is fine, just ignore
+        }        
+        if(outvalueCallbackMethod!=null)
+            System.out.println("outvalueCallback registered...");
+        else
+            System.out.println("outvalueCallback(String, double) was not found..");           
+        }
+        
+    //trigger callback    
+    public void callbackEvent(String _chan, double _val) {
+        if (outvalueCallbackMethod != null) {
+        try {
+          outvalueCallbackMethod.invoke(myParent, _chan, _val);
+         } 
+          catch (Exception e) {
+          System.err.println("Disabling outvalueCallback() because of an error.");
+          e.printStackTrace();
+          outvalueCallbackMethod = null;
+         }
+       }
+      }  
+
     //Method for Android, locates .csd file in .apk and returns it as a string.
     protected String getResourceFileAsString(int resId, Context context) {
        StringBuilder str = new StringBuilder();
