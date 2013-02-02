@@ -18,20 +18,24 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA  02111-1307  USA
  * 
- * @author	Jacob Joaquin, Rory Walsh, Conor Robotham
+ * @author    Rory Walsh
  * @modified	10/01/2012
  * @version	0.2.1
  */
 
 package csoundo;
 
+import processing.core.*;
 
 import csnd.*;
+import java.io.*;
+import java.util.*; 
 
 
 public class CallbackWrapper extends CsoundCallbackWrapper{
     public Csound csound;
     public MessageQueue messageQueue;
+    public Csoundo csoundoObject;
 
     
     public CallbackWrapper(Csound csnd){
@@ -40,29 +44,39 @@ public class CallbackWrapper extends CsoundCallbackWrapper{
         csound = csnd;
         messageQueue = new MessageQueue();
     }
-   
     
-    @Override
+    
+    public void OutputValueCallback(String _chan, double _val) {
+        csoundoObject.outValueCallbackFunction(_chan, _val);            
+        messageQueue.addMessageToValueQueue(_chan, _val);
+    }
+    
+
+    
+    public void setCsoundoObj(Csoundo obj){
+        csoundoObject = obj;
+    }    
+    
+    public void SetMessageCallback() {
+        //System.out.print("messagecallback");
+    }
+    
     public int YieldCallback()
     {
     //update Csound channels
-    for(int i=0;i<messageQueue.getNumberOfMessagesInChannelQueue();i++) {
-            csound.SetChannel(messageQueue.getMessageFromChannelQueue(i).channelName, 
-                              messageQueue.getMessageFromChannelQueue(i).channelData);
-        }
+    for(int i=0;i<messageQueue.getNumberOfMessagesInQueue("channel");i++)
+    csound.SetChannel(messageQueue.getMessageFromChannelQueue(i).channelName, 
+                      messageQueue.getMessageFromChannelQueue(i).channelData);
 
     //update Csound table values
-    for(int i=0;i<messageQueue.getNumberOfMessagesInTableQueue();i++) {
-            csound.TableSet(messageQueue.getMessageFromTableQueue(i).tableNumber, 
-                            messageQueue.getMessageFromTableQueue(i).xVal,
-                            messageQueue.getMessageFromTableQueue(i).yVal);
-        }
-
-    //csound.TableGet(1, 1);
+    for(int i=0;i<messageQueue.getNumberOfMessagesInQueue("table");i++)
+    csound.TableSet(messageQueue.getMessageFromTableQueue(i).tableNumber, 
+                    messageQueue.getMessageFromTableQueue(i).xVal,
+                    messageQueue.getMessageFromTableQueue(i).yVal);
     
     //flush messages from queues
-    messageQueue.flushMessagesFromTableQueue();
-    messageQueue.flushMessagesFromChannelQueue();
+    messageQueue.flushMessagesFromQueue("channel");
+    messageQueue.flushMessagesFromQueue("table");
     return 1;
     }
 
