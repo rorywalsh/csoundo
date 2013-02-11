@@ -18,28 +18,32 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA  02111-1307  USA
  * 
- * @author	Jacob Joaquin, Rory Walsh, Conor Robotham
+ * @author	Rory Walsh
  * @modified	10/01/2012
  * @version	0.2.1
  */
 
-
 package csoundo;
 
+import csnd.*;
+import java.io.*;
 import java.util.*; 
 
 /**
  * This class is for saving messages to a queue
- * so they can be sent to and from Csound in a thread safe manner
+ * so they can be sent to and from Csound in a thread safe mannor
  */
 public class MessageQueue {
+	private String csd;
         int numberOfTablesToRetreive;
 	private Vector<ChannelMessage> channelMessageQueue;
         private Vector<TableMessage> tableMessageQueue;
+        private Vector<ChannelMessage> valueMessageQueue;
 	
 	
 	public MessageQueue(){
             channelMessageQueue = new Vector<ChannelMessage>();
+            valueMessageQueue = new Vector<ChannelMessage>();
             tableMessageQueue = new Vector<TableMessage>();
 	} 
 	
@@ -50,10 +54,15 @@ public class MessageQueue {
 	public void addMessageToTableQueue(int _tableNumber, int _index, double _amp){
 		tableMessageQueue.addElement(new TableMessage(_tableNumber, _index, _amp));
 	}
-	
+
+	public void addMessageToValueQueue(String _chan, double _val){
+		valueMessageQueue.addElement(new ChannelMessage(_chan, _val));
+	}   
+        
         public void fillArrayWithTablePoints(int table, float[] array){
             
         }
+        
         
 	public ChannelMessage getMessageFromChannelQueue(int index){
 		return channelMessageQueue.get(index);
@@ -62,21 +71,29 @@ public class MessageQueue {
 	public TableMessage getMessageFromTableQueue(int index){
 		return tableMessageQueue.get(index);
 	}        
+         
+	public ChannelMessage getMessageFromValueQueue(int index){
+		return valueMessageQueue.get(index);
+	}
         
-	public int getNumberOfMessagesInChannelQueue(){
+	public int getNumberOfMessagesInQueue(String queue){
+            if(queue=="channel")
 		return channelMessageQueue.size();
-	}
-
-	public int getNumberOfMessagesInTableQueue(){
+            else if(queue=="table")
 		return tableMessageQueue.size();
-	}        
-        
-	public void flushMessagesFromChannelQueue(){
-		channelMessageQueue.removeAllElements();
+            else if(queue=="value")
+		return valueMessageQueue.size();
+            else return 0;
 	}
-        
-	public void flushMessagesFromTableQueue(){
+      
+	public void flushMessagesFromQueue(String queue){
+            if(queue=="channel")
+		channelMessageQueue.removeAllElements();
+            else if(queue=="table")
 		tableMessageQueue.removeAllElements();
-	}        
+            else if(queue=="value")
+		valueMessageQueue.removeAllElements();
+	}      
+      
 }
 

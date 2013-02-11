@@ -18,7 +18,7 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA  02111-1307  USA
  * 
- * @author    Rory Walsh
+ * @author	Rory Walsh
  * @modified	10/01/2012
  * @version	0.2.1
  */

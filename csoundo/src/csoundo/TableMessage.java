@@ -18,13 +18,17 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA  02111-1307  USA
  * 
- * @author	Jacob Joaquin, Rory Walsh, Conor Robotham
+ * @author	Jacob Joaquin, Rory Walsh, Conor Dempsey
  * @modified	10/01/2012
  * @version	0.2.1
  */
 
 package csoundo;
-//
+
+import csnd.*;
+import java.io.*;
+import java.util.*; 
+
 /**
  * Simple class to hold channel name and value.
  */

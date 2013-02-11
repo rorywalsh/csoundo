@@ -25,18 +25,21 @@
 
 package csoundo;
 
-import android.content.Context;
 import csnd.*;
+import processing.core.*;
+import android.content.Context;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import processing.core.*;
+import java.io.*;
+import java.lang.reflect.Method;
 
-public class Csoundo{
+public class Csoundo {
+    Method fancyEventMethod;
+    Method outvalueCallbackMethod;
     CsoundMYFLTArray table;
     PApplet myParent;
     public final static String VERSION = "0.2.1";
@@ -52,6 +55,8 @@ public class Csoundo{
     private CsoundPerformanceThread perfThread;	
     public SWIGTYPE_p_void v;
     public String options = "-+rtaudio=null -d -+msg_color=0 -m0d -b512";
+   
+    
     /**
      * The Csoundo constructor, usually called in the setup() method in your
      * sketch. Only supports 1 csd file for now, regardless of the number
@@ -72,49 +77,52 @@ public class Csoundo{
 
     //Android Mode Constructor
     public Csoundo(PApplet theParent, Context context) {
-
+        myParent = theParent;
+        createOutValueCallback(myParent);
+        
         csound = new AndroidCsound();
         csd = createTempFile(getResourceFileAsString(0x7f040000, context), context).getAbsolutePath().toLowerCase();
-        androidMode=true;  
+        androidMode=true;
         
-        setup(theParent, csound, csd);
-        
+        setup(csound, csd);
+
         csound.PreCompile();
-        csoundFile.setCommand(options + "\\" +csd);
-        checkCompileStatus(csound.Compile(csd)==0);
-        
+        csoundFile.setCommand(options + "\\" +csd);      
+        checkCompileStatus(csound.Compile(csd)==0);     
     }
 
     //Java Mode Constructor
-    public Csoundo(PApplet theParent, String _csd) {
-        
-        csound = new Csound();
+    public Csoundo(PApplet theParent, String _csd) {     
+        myParent = theParent;    
         path = myParent.dataPath("");
         csd  = myParent.dataPath(_csd);
+        createOutValueCallback(myParent);
+      
+        csound = new Csound();
         
-        setup(theParent, csound, csd);
-        
+        setup(csound, csd);
+           
         checkCompileStatus(csound.Compile(csd)==0);
     }
     
-    private void setup(PApplet theParent, Csound csound, String csd) {
-	//register our outvalue callback
-	createOutValueCallback(myParent);   
-    
-    	welcome();  
+    private void setup(Csound csound, String csd) {
+        welcome();
         csnd.csoundInitialize(null, null,
         csnd.CSOUNDINIT_NO_SIGNAL_HANDLER);
-        myParent = theParent;
+        
         messageQueue = new MessageQueue();
         callbackWrapper = new CallbackWrapper(csound);
         callbackWrapper.SetYieldCallback();
+        callbackWrapper.SetOutputValueCallback();
+        callbackWrapper.setCsoundoObj(this);
+        
         csoundFile = new CsoundFile();
         csoundFile.setCSD(fileToString(csd));
         csoundFile.exportForPerformance();
     }
-
-    //create outvalue callback function
-    public void createOutValueCallback(PApplet parent){
+ 
+    
+      public void createOutValueCallback(PApplet parent){
         try {
           outvalueCallbackMethod = parent.getClass().getMethod("outvalueCallback", new Class[] {String.class, double.class});
         } 
@@ -128,20 +136,21 @@ public class Csoundo{
             System.out.println("outvalueCallback(String, double) was not found..");           
         }
         
-    //trigger callback    
-    public void callbackEvent(String _chan, double _val) {
+        
+      public void callbackEvent(String _chan, double _val) {
         if (outvalueCallbackMethod != null) {
         try {
           outvalueCallbackMethod.invoke(myParent, _chan, _val);
-         } 
-          catch (Exception e) {
+        } catch (Exception e) {
           System.err.println("Disabling outvalueCallback() because of an error.");
           e.printStackTrace();
           outvalueCallbackMethod = null;
-         }
-       }
-      }  
+        }
+      }
+      else System.out.println("test");
+      }    
 
+      
     //Method for Android, locates .csd file in .apk and returns it as a string.
     protected String getResourceFileAsString(int resId, Context context) {
        StringBuilder str = new StringBuilder();
@@ -159,8 +168,27 @@ public class Csoundo{
        }
 
        return str.toString();
-     }
-
+     }   
+    
+      public void makeEvent() {
+        if (fancyEventMethod != null) {
+        try {
+          fancyEventMethod.invoke(myParent);
+        } catch (Exception e) {
+          System.err.println("Disabling fancyEvent() because of an error.");
+          e.printStackTrace();
+          fancyEventMethod = null;
+        }
+      }
+      //else System.out.println("test");
+      } 
+    
+    public void outValueCallbackFunction(String chan, double val){
+    //System.out.print("hello");    
+        //makeEvent();
+        callbackEvent(chan, val);
+    }
+    
      //Method for Android, writes .csd string to a temorary file for use with java(and Processing)
      protected File createTempFile(String csd, Context context) {
        File f = null;
@@ -197,7 +225,7 @@ public class Csoundo{
         csound.delete();
         System.out.println("Csound dispose complete");		
     }
-
+  
     private void csoundPerf() {
         if (compiledOK) {
             isRunning = true;
@@ -351,14 +379,14 @@ public class Csoundo{
         //super.run();
         //System.out.println(getName());
             start();
-           // perfThread = perfThread;
+            perfThread = perfThread;
             while(perfThread.GetStatus() != 0) {
                 System.out.println("Waiting for csoundPerformanceThread");
             }
 
             //csound =engine.csound;
             //mutex = engine.mutex;
-            //isRunning = isRunning;
+            isRunning = isRunning;
     }
 
     /**
@@ -409,11 +437,10 @@ public class Csoundo{
      */
     
     //this should only be called when performKsmps is finished a cycle
-   /* public float tableGet(int t, int i) {
+    public float tableGet(int t, int i) {
 	if (!compiledOK) return 0;
         return (float) csound.TableGet(t, i);
-    }*/
-
+    }
     
     public int getTable(SWIGTYPE_p_p_double tablePtr, int i) {
 	if (!compiledOK) return 0;
@@ -421,9 +448,9 @@ public class Csoundo{
     }
 
 // can't overload this for android interface.....    
-//    public int getTable(SWIGTYPE_p_p_float tablePtr, int i) {
+//  public int getTable(SWIGTYPE_p_float tablePtr, int i) {
 //	if (!compiledOK) return 0;
-//        return csound.GetTable(tablePtr, i);
+//        return (AndroidCsound)GetTable(tablePtr, i);
 //    }
         
    
@@ -452,7 +479,6 @@ public class Csoundo{
         callbackWrapper.messageQueue.addMessageToTableQueue(t, i, v);
     }
 
-    
     private void checkCompileStatus(boolean status){
      
         if(status) {
@@ -464,6 +490,4 @@ public class Csoundo{
             System.out.println("Csound failed to compile your file");
         }
     }
-
-    
 }
