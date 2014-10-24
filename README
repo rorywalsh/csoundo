@@ -42,6 +42,8 @@ Building
 2) cd to the src directory of the csoundo folder and dit the make.sh file there so that it points to 
 valid core.jar and csnd6.jar files.
 
+3) From the same directory run ./make.sh to build the library.
+
 3) After it builds you need to copy your entire csoundo folder, minus the src directory if you wish, to your sketchbook/libraries/ folder.
 This is a folder that Processing creates in your home directory when it runs.  
 
