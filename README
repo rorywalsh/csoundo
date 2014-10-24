@@ -36,12 +36,37 @@ http://csound.sourceforge.net/
 
 
 Building 
-
-1) Install Csound or build from source. you will need to have a csnd6.jar to work with. It should build by default
-and is also part of the pre-built Csound packages. 
+==========================================================
+1) Install Csound or build from source(Instructions below). 
 
 2) cd to the src directory of the csoundo folder and dit the make.sh file there so that it points to 
 valid core.jar and csnd6.jar files.
 
 3) After it builds you need to copy your entire csoundo folder, minus the src directory if you wish, to your sketchbook/libraries/ folder.
 This is a folder that Processing creates in your home directory when it runs.  
+
+
+Building Csound 6
+==========================================================
+The first thing to do is get a copy of the Csound 6 sources. The following instructions are written for those getting a copy of the source code from Git. You will need to adjust the steps accordingly when using the source tarball from the files section.
+
+The first thing to do is make sure you have all of the required dependencies for building Csound. In a terminal, do the following:
+
+    sudo apt-get build-dep csound
+    sudo apt-get install cmake
+    sudo apt-get install git
+
+The following numbered steps are to be done in a terminal for building and installing Csound:
+
+    cd ~
+    mkdir csound
+    cd csound
+    git clone https://github.com/csound/csound.git csound
+    mkdir cs6make
+    cd cs6make
+    cmake ../csound
+    make -j6
+    sudo make install
+    sudo ldconfig
+
+At this point, Csound 6 should now be compiled and installed into the /usr/local set of folders.
