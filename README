@@ -1,20 +1,10 @@
-'Csoundo' is a Csound library for Processing v2.0b7
+'Csoundo'
+A Csound library for Processing
 
 Jacob Joaquin, Conor Robotham, Rory Walsh
 
 Copyright (c) 2010  jacobjoaquin@gmail.com
 http://csoundblog.com/
-
-Note  
-----
-
-Csoundo development is still in its early stages. Though people have
-been successful in running Csoundo on Linux, OSX and Windows, there
-are still many issues that need to be addressed. See the 'issues'
-tracker on the github site. 
-
-Special thanks to Conor Robotham for updated the libarry for Processing 
-2.0, and addition of Android support.  
 
 
 What is Processing?
@@ -32,7 +22,6 @@ prototyping, and production."
 http://processing.org/
 
 
-
 What is Csound?
 ---------------
 
@@ -46,212 +35,13 @@ television."
 http://csound.sourceforge.net/
 
 
+Building 
 
-Running on OS X
----------------
+1) Install Csound or build from source. you will need to have a csnd6.jar to work with. It should build by default
+and is also part of the pre-built Csound packages. 
 
-1) Install Csound.
+2) cd to the src directory of the csoundo folder and dit the make.sh file there so that it points to 
+valid core.jar and csnd6.jar files.
 
-Only one version of the pre-built Csound binaries has been confirmed
-to work on OS X, and only confirmed to work on Intel machines:
-
-csound5.12.4-OSX10.5-Universal.dmg
-http://sourceforge.net/projects/csound/files/csound5/csound5.12/csound5.12.4-OSX10.5-Universal.dmg/download
-
-
-2) Copy the Csoundo folder into your Processing 'libraries' folder.
-See instructions at Processing.org:
-
-http://wiki.processing.org/w/How_to_Install_a_Contributed_Library
-
-
-3) Copy or make a symlink to the csnd.jar file. The csnd.jar is
-located here:
-
-/Library/Frameworks/CsoundLib.framework/Resources/Java/csnd.jar
-
-Make a copy of csnd.jar in this folder:
-
-yoursketchbook/libraries/csoundo/library
-
-Alternatively, you can create a symbolic link using the terminal
-app.
-
-$ cd yoursketchbook/libraries/csoundo/library
-$ ln -s /Library/Frameworks/CsoundLib.framework/Resources/Java/csnd.jar csnd.jar
-
-
-
-Running on Linux
-----------------
-
-I do not have linux installed. If you have better instructions,
-please email me, and I will incorporate them into the Csoundo
-knowledge base.
-
-1) Install Csound:
-
-http://csound.sourceforge.net/
-
-
-2) Copy the Csoundo folder into your Processing 'libraries' folder.
-See instructions at Processing.org:
-
-http://wiki.processing.org/w/How_to_Install_a_Contributed_Library
-
-
-3) Copy or make a symlink to the csnd.jar here:
-
-yoursketchbook/libraries/csoundo/library
-
-To create a symbolic link:
-
-$ cd yoursketchbook/libraries/csoundo/library
-$ ln -s /Library/Frameworks/CsoundLib.framework/Resources/Java/csnd.jar csnd.jar
-
-
-Running on Windows
-------------------
-
-There have been reports of Csoundo working on various versions of
-Windows. I do not have Windows installed. If you have better
-instructions, please email me, and I will incorporate them into the
-Csoundo knowledge base.
-
-1) Install Csound:
-
-http://csound.sourceforge.net/
-
-
-2) Copy the Csoundo folder into your Processing 'libraries' folder.
-See instructions at Processing.org:
-
-http://wiki.processing.org/w/How_to_Install_a_Contributed_Library
-
-
-3) Copy the csnd.jar here:
-
-yoursketchbook/libraries/csoundo/library
-
-
-------------------------------------------
-Csoundo Android
-------------------------------------------
-Quick setup for advanced users:
-
-1.Add csoundo and CsoundAndroid folder to the processing libraries folder.
-
-2.Open the CsoundAndroid folder and change the sdk.dir path in the local.properties file.
-
-3.Backup and replace the Processing pde.jar with the
- provided pde.jar.(Processing/lib/pde.jar)
-
-
-CONTENTS:
-
-A. PROCESSING ANDROID.
-
-B. CSOUNDO ANDROID.
-
-C. OVERVIEW OF A CSOUNDO SKETCH FOLDER
-
-D. CODE REQUIREMENTS
-
-E. EXTRA NOTES:
-
-
-Detailed steps for setting up:
-
-A. PROCESSING ANDROID.(Referenced from wikipidea entry)
-
-1. Download Android SDK: http://developer.android.com/sdk/index.html
-
-2. Run the SDK Manager and download the following items: 
-Tools/Android SDK Tools(Already Installed)
-Tools/Android SDK Platform-tools
-Android 2.3.3(API 10)/SDK Platform
-Android 2.3.3(API 10)/Google APIs
-Extras/Googe USB Driver
-
-3.Download Processing 2.0b6. (Csoundo tested, previous 2.0 beta versions may be compatible. Tested 2.0b3)
-
-4.If required, download the latest USB drivers for your
- android phone.(See manufacturer website)
-
-5.Run Processing and click on the box in the top right hand corner labeled JAVA. Change to ANDROID. A window will appear requiring you to navigate to and select your Android SDK.
-
-6.Connect your android phone via USB cable. Go to file>Examples.. and try an android example. Click the play icon or hit Ctrl+R.
-
-B. CSOUNDO ANDROID
-
-1.Place csoundo folder in your Processing libraries 
-folder. Thats: \Documents\Processing\libraries
-
-2.Open the main processing folder(the program) and go to the lib folder. Backup the pde.jar file to another location and place the provided pde.jar into the lib folder, overwriting the original. (AndroidBuild file provided for reference is the source code of the modified class within the pde.jar)
-
-3.1 Install CSOUND Version 5.18, or see EXTRA NOTES if you already have a CSOUND Version.
-3.2 Copy the built CsoundAndroid folder provided into this folder.
-3.3 Open the local.properties file(With TEXTPAD or 
-another editor) within the CsoundAndoid folder and 
-change sdk.dir path for the android-sdk on your computer.
-
-4.Open the csoundo examples folder from processing and test a sketch. You must comment/uncomment the csoundo instantiation to switch between Java and Android mode. 
-
-C. OVERVIEW OF A CSOUNDO SKETCH FOLDER
-
-*The only required files for a developer are the main .pde file inside the main sketch folder, and the .csd file of the same name, in the data folder.
-
- 1.Inside your sketch folder, is the main .pde file of the same name, along with any other .pde or java files used in the project.
-
-2.The csound .csd file is located in the data folder, and must be named exactly as the project name(caps-sensitive)
-
- 3.icon-36, icon-48 and icon-72 are optional, and the default Processing icon will be used if they are left out.(Csoundo icons are provided)
-
- 4.A sketch.properties file is created automatically inside the sketch folder, used by Processing.
-
- 5.A __CSOUNDO__.csd file will be created and overwritten inside the data folder for every Java Build. Editing this file will have no effect.
-
- 6.An AndroidManifest file will be automatically created by Processing in the sketchfolder upon Android run.
-
-D. CODE REQUIREMENTS
-
- Csd file
-1.1Within the .csd file the following options must be specified.(Modify bravely)
-<CsOptions>
--o dac -+rtaudio=null -d -+msg_color=0 -m0 -b512
-</CsOptions>
-1.2 The above are the Android Mode Options, Use cs.setOptions within your .pde code to set Java Mode csound options.(Otherwise working default options will be applied)
-
-2.Use the chnget inside a csoundo instrument to specify a reference channel for Processing. e.g. kfreq chnget "pitch"
-
- Pde file
-3. import csoundo.*; must be included at the top of your main .pde sketch file.
-
-4. Csoundo cs; Csoundo object must be declared outside 
-any methods.(Usually before setup())
-
-5. The cs object must be instantiated in the setup method using the Android Constructor:
-cs = new Csoundo(this, super.getApplicationContext());
-or the Java Constructor:
-cs = new Csoundo(this, "MySketch.csd");
-
-6. cs.run(); Method must be called in setup method.
-
-7. Csoundo methods can then be called in the setup or draw methods. e.g cs.setChn("pitch", pitchVar); inside the draw method.
-
-E. EXTRA NOTES:
-
- - If you are not running CSOUND Version 5.18 it is recommended that you replace the csnd.jar file within Csoundo with the csnd.jar file from within your version of Csound. (Processing\libaries\Csoundo\library\csnd.jar)
-
- - modified pde.jar has only been tested with 2.6 beta and 2.3 beta, and likely will need to be updated for future versions.
-
- -It is recommended to debug in Java first and, if possible, add Android specific methods last.
-
- - for future versions of CsooundAndroid you can place it in the directory specified above, but, unless they have changed the way they release it, you will need to build it from the command line console to create the build.xml file required. cd to android-sdk/tools and run command:
-android update lib-project --target 1 --path C:\Users
-\Conor\Desktop\csound-android-5.18.03\CsoundAndroid    
- Change path accordingly.
-
-
-
-
+3) After it builds you need to copy your entire csoundo folder, minus the src directory if you wish, to your sketchbook/libraries/ folder.
+This is a folder that Processing creates in your home directory when it runs.  
