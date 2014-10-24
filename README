@@ -55,6 +55,12 @@ with:
   
   java -Djna.nosys=true -Djava.library.path=/usr/local/lib processing.app.Base "$SKETCH" &  
 
+NOTE
+------------------------
+You many need to install java 1.6 in order for Processing to recognise the Csoundo library. Many flavours of Linux ship with 
+Open Java. You can check the version by typing 'java -version' from the terminal. If you have openJDK installed you will need
+to revert to Java SE 1.6. 
+
 
 Building Csound 6
 ==========================================================
