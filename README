@@ -59,7 +59,8 @@ NOTE
 ------------------------
 You many need to install java 1.6 in order for Processing to recognise the Csoundo library. Many flavours of Linux ship with 
 Open Java. You can check the version by typing 'java -version' from the terminal. If you have openJDK installed you will need
-to revert to Java SE 1.6. 
+to revert to Java SE 1.6. After you have installed Java 1.6 you will need to rebild Csound so that the csnd6.jar file is rebuilt
+with the correct version of Java. 
 
 
 Building Csound 6
