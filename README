@@ -45,7 +45,15 @@ valid core.jar and csnd6.jar files.
 3) From the same directory run ./make.sh to build the library.
 
 3) After it builds you need to copy your entire csoundo folder, minus the src directory if you wish, to your sketchbook/libraries/ folder.
-This is a folder that Processing creates in your home directory when it runs.  
+This is a folder that Processing creates in your home directory when it runs.
+
+4) Open your Processing and Processing.java files from your processing install directory and add the csound library path. Just replace the following lines:
+  
+  java -Djna.nosys=true processing.app.Base "$SKETCH" &
+
+with:
+  
+  java -Djna.nosys=true -Djava.library.path=/usr/local/lib processing.app.Base "$SKETCH" &  
 
 
 Building Csound 6
