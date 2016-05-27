@@ -62,6 +62,9 @@ Open Java. You can check the version by typing 'java -version' from the terminal
 to revert to Java SE 1.6. After you have installed Java 1.6 you will need to rebild Csound so that the csnd6.jar file is rebuilt
 with the correct version of Java. 
 
+### Notes for OSX users
+If you receive an 'java.lang.UnsatisfiedLinkError: no _jcsound6 in java.library.path' error, please try dragging csoundo.jar and csnd.far from the csoundo library folder on to your csoundo example code within the Processing IDE. This will copy the libraries to a folder called 'code' contained within your sketch directory. Once this folder has been created, add a copy of lib_jcsound6.jnilib from the Csound64.framework to it. This should resolve the above error.  
+
 
 Building Csound 6
 ==========================================================
