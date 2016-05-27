@@ -39,16 +39,18 @@ Building
 ==========================================================
 1) Install Csound or build from source(Instructions below). 
 
-2) cd to the src directory of the csoundo folder and edit the make.sh file there so that it points to 
-valid core.jar and csnd6.jar files.
+2) cd to the src directory of the csoundo folder and edit the make.sh file 
+there so that it points to valid core.jar and csnd6.jar files.
 
 3) From the same directory run ./make.sh to build the library.
 
-3) After it builds you need to copy your entire csoundo folder, minus the src directory if you wish, to your sketchbook/libraries/ folder.
+3) After it builds you need to copy your entire csoundo folder, minus the src 
+directory if you wish, to your sketchbook/libraries/ folder.
 This is a folder that Processing creates in your home directory when it runs.
 
 
-4) (Windows and Linux only) Open your Processing and Processing.java files from your processing install directory and add the csound library path. Just replace the following lines:
+4) (Windows and Linux only) Open your Processing and Processing.java files from your 
+processing install directory and add the csound library path. Just replace the following lines:
   
   java -Djna.nosys=true processing.app.Base "$SKETCH" &
 
@@ -56,7 +58,11 @@ with:
   
   java -Djna.nosys=true -Djava.library.path=/usr/local/lib processing.app.Base "$SKETCH" &  
 
-4) (OSX users) If you receive an 'java.lang.UnsatisfiedLinkError: no _jcsound6 in java.library.path' error, please try dragging csoundo.jar and csnd.far from the csoundo library folder on to your csoundo example code within the Processing IDE. This will copy the libraries to a folder called 'code' contained within your sketch directory. Once this folder has been created, add a copy of lib_jcsound6.jnilib from the Csound64.framework to it. This should resolve the above error.  
+4) (OSX users) If you receive an 'java.lang.UnsatisfiedLinkError: no _jcsound6 in java.library.path' error, 
+please try dragging csoundo.jar and csnd.far from the csoundo library folder on to your csoundo 
+example code within the Processing IDE. This will copy the libraries to a folder called 'code' 
+contained within your sketch directory. Once this folder has been created, add a copy of 
+lib_jcsound6.jnilib from the Csound64.framework to it. This should resolve the above error.  
 
 
 ### Note for Linux users
