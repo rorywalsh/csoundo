@@ -59,12 +59,18 @@ with:
   java -Djna.nosys=true -Djava.library.path=/usr/local/lib processing.app.Base "$SKETCH" &  
 
 4) (OSX users) If you receive an 'java.lang.UnsatisfiedLinkError: no _jcsound6 in java.library.path' error, 
-please try dragging csoundo.jar and csnd.far from the csoundo library folder on to your csoundo 
-example code within the Processing IDE. This will copy the libraries to a folder called 'code' 
-contained within your sketch directory. Once this folder has been created, add a copy of 
-lib_jcsound6.jnilib from the Csound64.framework to it. This should resolve the above error.  
+please try adding a copy of lib_jcsound6.jnilib from the Csound64.framework to the library folder of csoundo that resides
+in your Processing documents folder. The folder structure of your installed csoundo library should look like this:
 
-
+processing ->
+            libraries ->
+                        csoundo ->
+                                examples
+                                library ->
+                                        csoundo.jar
+                                        csnd.jar
+                                        lib_jcsound6.jnilib
+                                
 ### Note for Linux users
 You many need to install java 1.6 in order for Processing to recognise the Csoundo library. Many flavours of Linux ship with 
 Open Java. You can check the version by typing 'java -version' from the terminal. If you have openJDK installed you will need
